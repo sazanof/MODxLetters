@@ -1,0 +1,163 @@
+<script src="/assets/modules/letters/js/letters.actions.js"></script>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-4">
+                {% if letters|length > 0 %}
+                <div class="list-group">
+                    {# Выводим письма списком #}
+                    {% for letter in letters %}
+                    <div class="list-group-item
+                    {% if letter.id == get_id %}
+                    active
+                    {% endif %}">
+                        <i class="fa fa-envelope" aria-hidden="true"></i> <a href="{{ url }}&edit={{ letter.id }}" class="btn-link">{{ letter.subject }}</a>
+                        <br>
+                        <i class="fa fa-clock-o" aria-hidden="true"></i> {{ letter.date|date("d.m.Y H:i") }}<br>
+                        {% if letter.id == get_id %}
+                        <!-- Split button -->
+                        <div class="block">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-xs btn-warning"><i class="fa fa-paper-plane" aria-hidden="true"></i> Отправить это письмо</button>
+                                <button type="button" class="btn btn-xs btn-warning dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Отправить это письмо</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="&send=all" class="sendLetter">
+                                        <i class="fa fa-users" aria-hidden="true"></i>
+                                         Всем подписчикам</a></li>
+                                    <li class="divider"></li>
+                                    {% for category in categories %}
+                                    {% if category.id in letter.cat_id %}
+                                    <li><a href="&send=cat&cat_id={{ category.id }}" class="sendLetter">
+                                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                                        {{ category.title }}</a></li>
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <button type="button" class="btn btn-xs btn-success">
+                                <i class="fa fa-table" aria-hidden="true"></i>
+                                {{ lang.logs }}
+                            </button>
+                            <a class="btn btn-xs btn-default deleteSome" href="{{ url }}&delete={{ letter.id }}" title="{{ lang.delete_letter }}">
+                                <i class="fa fa-trash" aria-hidden="true"></i> {{ lang.delete }}
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-warning">
+                    <a href="#" class="alert-link">{{ lang.letters_empty }}</a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                {% if letter.id > 0 %}
+                {{ lang.decr }}
+                    <div class="menu_right">
+                        <button type="button" class="btn btn-info" name="preview" value="{{ letter.id }}" id="preview">
+                            <i class="fa fa-search-plus" aria-hidden="true"></i> {{ lang.preview }}
+                        </button>
+                        <button type="button" class="btn btn-danger" name="del" value="{{ letter.id }}" id="delete">
+                            <i class="fa fa-trash" aria-hidden="true"></i> {{ lang.delete }}
+                        </button>
+                    </div>
+                {% endif %}
+                <h2 class="marg_title">{{ lang.editOrNew }}</h2>
+                <div class="well">
+                    <form class="" method="post">
+                        <div class="form-group">
+                            <label for="inputTitle">{{ lang.letter_title }}</label>
+                            <input type="text" class="form-control" id="inputTitle" name="subject"
+                                   value="{{ letter.subject }}">
+                        </div>
+                        {# Форма выбора шаблона #}
+                        <div class="form-group">
+                            <label>{{ lang.template_txt }}</label>
+                            <select class="form-control" name="template">
+                                <option value="">{{ lang.not_choose }}</option>
+                                {% for template in templates %}
+                                {% if letter.template == template.id %}
+                                <option value="{{ template.id }}" selected="selected">({{ template.id }}) {{ template.title
+                                    }} ({{ template.description }})
+                                </option>
+                                {% else %}
+                                <option value="{{ template.id }}">({{ template.id }}) {{ template.title }} ({{
+                                    template.description }})
+                                </option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {# форма письма #}
+                        <div class="form-group">
+                            <label>{{ lang.letter_body }}</label>
+                            {{ letter.tinyMCE | raw }}
+                        </div>
+                        {# Форма выбора категории #}
+                        <div class="form-group">
+                            <label>{{ lang.cat_choose }}</label>
+                            <select class="form-control" name="cat_id[]" multiple="multiple">
+                                {% for category in categories %}
+                                {% if category.id in letter.cat_id %}
+                                <option value="{{ category.id }}" selected="selected">({{ category.id }}) {{ category.title
+                                    }} ({{ category.description }})
+                                </option>
+                                {% else %}
+                                <option value="{{ category.id }}">({{ category.id }}) {{ category.title }} ({{
+                                    category.description }})
+                                </option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-top: 10px">
+                            <button type="submit" class="btn btn-success" name="sub" value="1">
+                                <i class="fa fa-save" aria-hidden="true"></i>
+                                {{ lang.newsletter_edit_save }}
+                            </button>
+                        </div>
+                    </form>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="letter" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Заголовок модального окна -->
+            <div class="modal-header">
+                <h4 class="modal-title">{{ lang.preview }}</h4>
+            </div>
+            <!-- Основное содержимое модального окна -->
+            <div class="modal-body">
+            </div>
+            <!-- Футер модального окна -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"  data-dismiss="modal">{{ lang.close }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="sendLetter" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Заголовок модального окна -->
+            <div class="modal-header">
+                <h4 class="modal-title">{{ lang.sendLetter }}</h4>
+            </div>
+            <!-- Основное содержимое модального окна -->
+            <div class="modal-body sendLetterBody">
+            </div>
+            <!-- Футер модального окна -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ lang.close }}</button>
+            </div>
+        </div>
+    </div>
+</div>

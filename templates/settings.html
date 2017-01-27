@@ -1,0 +1,29 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="panel panel-default">
+            <div class="panel-heading">{{ lang.conf_mail }}</div>
+            <div class="panel-body">
+                <div class="alert alert-warning">{{ lang.conf_info }}</div>
+                <ul>
+                    <li><b>{{ lang.emailsender }}</b> - {{conf.emailsender}}</li>
+                    <li><b>{{ lang.email_method }}</b> - {{conf.email_method|upper}}</li>
+                    {% if conf.email_method == 'mail' %}
+
+
+                    {% elseif conf.email_method == 'smtp' %}
+                        {% if conf.smtp_auth == 0 %}
+                        <li><b>{{ lang.smtp_auth }}</b> - {{ lang.smtp_auth_false|raw }}</li>
+                        {% elseif conf.smtp_auth == 1 %}
+                        <li><b>{{ lang.smtp_auth }}</b> - {{ lang.smtp_auth_true|raw }}</li>
+                        <li><b>{{ lang.smtp_port }}</b> - {{ conf.smtp_port }}</li>
+                        <li><b>{{ lang.smtp_host }}</b> - {{ conf.smtp_host }}</li>
+                        <li><b>{{ lang.smtp_username }}</b> - {{ conf.smtp_username }}</li>
+                        <li><b>{{ lang.smtp_pass }}</b> - *************</li>
+                        {% endif %}
+
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

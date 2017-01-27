@@ -1,0 +1,25 @@
+#actions {height:54px;}
+.tbl_subscribers{margin-top:15px}
+button {width: auto;}
+.btn-warning,.btn-success,.btn-danger,.btn-info {color:#ffffff !important;}
+.btn-default {color:#666 !important;}
+.floatright {float:right}
+.btn.round-corners {border-radius:50%;padding:5px;height: 32px;width:32px}
+.even {background-color:#ffffff }
+.input {margin-bottom: 15px;}
+.file-input-name {color:#888; font-weight:bold; }
+label {display:block}
+select, form select.dropdown, form select[size="1"], form select:not([size]) {height: auto}
+.menu_right {float: right}
+h2.marg_title {margin-top: 0}
+#letter .modal-dialog {width:90%}
+#example_filter label {text-align: right}
+small.smaller {color:#999999}
+.list-group-item.active,.list-group-item:hover,.list-group-item.active:hover {background-color: #f9f9f9;border-color:#ccc;color:#333}
+.list-group-item.active a.btn-link {color:#333;text-decoration: none;font-weight: bold}
+.list-group-item a.btn-link {color:#333;text-decoration:none;font-weight: bold}
+.list-group-item a.btn-link:hover {text-decoration:underline;}
+.well-sm.marginnone {margin:6px 0 0 0}
+.block {margin-top:6px}
+.dropdown-menu li {list-style: none}
+.floatDelete {position: absolute;right:-9px; top:9px; padding-right:15px}

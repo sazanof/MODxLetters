@@ -1,0 +1,45 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="list-group">
+                    {% for category in categories %}
+                    <div class="list-group-item
+                        {% if category.id == get_id %}
+                        active
+                        {% endif %}
+                        ">
+                        <a href="{{ url }}&edit={{ category.id }}" class="btn-link">
+                            <i class="fa fa-list-alt" aria-hidden="true"></i> #{{ category.id }} {{ category.title }}
+                        </a>
+                        <span class="floatDelete">
+                            <a class="btn btn-xs btn-default deleteSome" href="{{ url }}&delete={{ category.id }}" title="{{ lang.delete_category }}">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </a>
+                        </span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-8">
+                <h2 class="marg_title">{{ category.pagetitle }}</h2>
+                <form role="form" method="post">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-list-alt" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" placeholder="" name="title" value="{{ category.title }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-align-left" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" placeholder="" name="description" value="{{ category.description }}">
+                        </div>
+                    </div>
+                    <button type="submit" name="sub" value="1" class="btn btn-success"><i class="fa fa-save" aria-hidden="true"></i> {{ lang.save }}</button>
+                     <a class="btn btn-danger" href="{{ url }}"><i class="fa fa-close" aria-hidden="true"></i> {{ lang.cancel }}</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

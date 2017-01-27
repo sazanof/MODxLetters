@@ -1,0 +1,53 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="list-group">
+                    {% for template in templates %}
+                    <div class="list-group-item
+                    {% if template.id == get_id %}
+                    active
+                    {% endif %}
+                    " id="list-group-item_{{ template.id }}">
+                        <a href="{{ url }}&edit={{ template.id }}" class="btn-link">
+                            <i class="fa fa-envelope-open" aria-hidden="true"></i> {{ template.title }}
+                        </a>
+                        <div class="block" style="text-align: right">
+                            <a class="btn btn-small btn-default deleteSome" href="{{ url }}&delete={{ template.id }}" title="{{ lang.delete_template }}">
+                                <i class="fa fa-trash" aria-hidden="true"></i> {{ lang.delete }}
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-8">
+                <h2 class="marg_title">{{ template.pagetitle }}</h2>
+                {% if template.id|number_format %}
+                    <div class="alert alert-warning"> Шаблон был обновлен {{ template.date|date("d.m.Y H:i:s") }}</div>
+                {% endif %}
+                <form role="form" method="post">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope-open" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" placeholder="{{ lang.title }}" name="title" value="{{ template.title }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-align-left" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" placeholder="{{ lang.description }}" name="description" value="{{ template.description }}">
+                        </div>
+                    </div>
+                    <label>{{ lang.template_code }}</label>
+                    <div class="alert alert-info"><i class="fa fa-lightbulb-o" aria-hidden="true"></i> {{ lang.template_code_info |raw }}</div>
+                    {{ tinyMCE | raw }}
+                    <div style="margin-top: 10px;">
+                        <button type="submit" name="sub" value="1" class="btn btn-success"><i class="fa fa-save" aria-hidden="true"></i> {{ lang.save }}</button>
+                        <a class="btn btn-danger" href="{{ url }}"><i class="fa fa-close" aria-hidden="true"></i> {{ lang.cancel }}</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
