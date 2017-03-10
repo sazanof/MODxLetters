@@ -6,9 +6,11 @@ if (file_exists($lng_file)) {
 } else {
     die("Не найден языковой файл! Проверьте конфинурацию модуля и файлы.");
 }
+require ENL_PATH . 'classes/Realemail.php';
 require_once ENL_PATH . 'classes/Letters.php';
 require_once ENL_PATH . 'classes/Categories.php';
 require_once ENL_PATH . 'classes/Subscribers.php';
+$realemail = new Realemail();
 $letters = new Letters();
 $categories = new Categories();
 $subscribers = new Subscribers();
@@ -32,7 +34,7 @@ $out .= '<!DOCTYPE html><html><head>
 
 <script src="[+path+]libs/jquery-3.1.1.min.js"></script>
 <script src="[+path+]libs/jquery-migrate-1.4.1.min.js"></script>
-<script type="text/javascript" src="[+path+]libs/DataTables/datatables.min.js"></script>
+<script src="[+path+]libs/DataTables/datatables.min.js"></script>
 <script src="[+path+]libs/bootstrap/js/bootstrap.min.js"></script>
 <script src="[+path+]libs/bootstrap.file-input.js"></script>
 <script>

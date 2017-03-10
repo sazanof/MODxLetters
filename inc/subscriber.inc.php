@@ -52,7 +52,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
             $email = $modx->db->escape($_POST['email']);
             $firstname = $modx->db->escape($_POST['firstname']);
             $lastname = $modx->db->escape($_POST['lastname']);
-            $cat_id = implode(',',$_POST['cat_id']);
+            $cat_id = @implode(',',$_POST['cat_id']);
             $sql = "INSERT INTO " . TBL_SUBSCRIBERS . " 
                 (email, firstname, lastname, cat_id, created) VALUES ('" . $email . "','" . $firstname . "','" . $lastname . "','" . $cat_id . "', NOW())
                 ON DUPLICATE KEY UPDATE 
@@ -63,8 +63,19 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
                 created=NOW()
             ";
             //echo $sql;
-            if ($modx->db->query($sql)){
-                echo 1;
+            if (filter_var($email,FILTER_VALIDATE_EMAIL)){
+                // add realemail check
+                if ($realemail->checkEmail($email) == 1 or $realemail->checkEmail($email) == 2){
+                    if ($modx->db->query($sql)){
+                        echo 1;
+                    }
+                }
+                else {
+                    echo $email.' не существует в природе.';
+                }
+            }
+            else {
+                echo 'Не заполнен email';
             }
             exit;
             break;

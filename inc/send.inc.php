@@ -78,14 +78,17 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
             $mail->AltBody = $body;
             //$mail->SMTPDebug  = 1;
             foreach ($ar as $val){
-                $mail->AddAddress($val['email'],$val['firstname']);
-                if (!$mail->send()) {
-                    echo 'Main mail: ' . $mail->ErrorInfo;
-                } else {
-                    $subscribers->subscriberId = $val['id'];
-                    $subscribers->lastLetterSend($num);
-                    $subscribers->updateLastnewsletter($val['id']);
-                    $mail->ClearAddresses();
+                //add realemail check
+                if ($realemail->checkEmail($val['email']) == 1 or $realemail->checkEmail($val['email']) == 2){
+                    $mail->AddAddress($val['email'],$val['firstname']);
+                    if (!$mail->send()) {
+                        echo 'Main mail: ' . $mail->ErrorInfo;
+                    } else {
+                        $subscribers->subscriberId = $val['id'];
+                        $subscribers->lastLetterSend($num);
+                        $subscribers->updateLastnewsletter($val['id']);
+                        $mail->ClearAddresses();
+                    }
                 }
             }
         } else {
