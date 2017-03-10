@@ -38,22 +38,25 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED
                             $email = $modx->db->escape($item['email']);
                             $lastname = $modx->db->escape($item['lastname']);
                             $firstname = $modx->db->escape($item['firstname']);
-                            $sql = "INSERT INTO `".TBL_SUBSCRIBERS."` 
-                            (email, firstname, lastname, created) VALUES ('".$email."','".$firstname."','".$lastname."', NOW())
-                            ON DUPLICATE KEY UPDATE 
-                                email='$email',
-                                firstname='$firstname',
-                                lastname='$lastname',
-                                created=NOW()
-                            ";
-                            if ($modx->db->query($sql)){
-                                $per = round( (100 * ($j+1)) / $total );
-                                $_SESSION['process'] = array(
-                                    'total' => $total,
-                                    'current' => ($j+1),
-                                    'per' => $per,
-                                    'email' => $item['email']
-                                );
+                            // add realemail check
+                            if ($realemail->checkEmail($email) == 1 or $realemail->checkEmail($email) == 2){
+                                $sql = "INSERT INTO `".TBL_SUBSCRIBERS."` 
+                                (email, firstname, lastname, created) VALUES ('".$email."','".$firstname."','".$lastname."', NOW())
+                                ON DUPLICATE KEY UPDATE 
+                                    email='$email',
+                                    firstname='$firstname',
+                                    lastname='$lastname',
+                                    created=NOW()
+                                ";
+                                if ($modx->db->query($sql)){
+                                    $per = round( (100 * ($j+1)) / $total );
+                                    $_SESSION['process'] = array(
+                                        'total' => $total,
+                                        'current' => ($j+1),
+                                        'per' => $per,
+                                        'email' => $item['email']
+                                    );
+                                }
                             }
                             $j++;
                             session_write_close();
