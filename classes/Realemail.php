@@ -61,6 +61,10 @@ class Realemail
                     $out = 2;
                 }
             }
+            // временный фикс для 503 gmail
+            else if (substr_count($response, "503") > 0) {
+                $out = 2;
+            }
             else {
                 $out = "  Required email address existence was not recovered. Last response:\n  ---\n$response  ---\n\n";
             }
