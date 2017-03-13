@@ -39,7 +39,7 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED
                             $lastname = $modx->db->escape($item['lastname']);
                             $firstname = $modx->db->escape($item['firstname']);
                             // add realemail check
-                            if ($realemail->checkEmail($email) == 1 or $realemail->checkEmail($email) == 2){
+                            //if ($realemail->checkEmail($email) == 1 or $realemail->checkEmail($email) == 2){
                                 $sql = "INSERT INTO ".TBL_SUBSCRIBERS." 
                                 (email, firstname, lastname, created) VALUES ('".$email."','".$firstname."','".$lastname."', NOW())
                                 ON DUPLICATE KEY UPDATE 
@@ -57,7 +57,7 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED
                                         'email' => $item['email']
                                     );
                                 }
-                            }
+                            //}
                             $j++;
                             session_write_close();
                             usleep(10000);
