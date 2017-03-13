@@ -48,3 +48,5 @@ INSERT INTO `modx_letters_templates` (`id`, `date`, `title`, `description`, `cod
 
 INSERT INTO `modx_letters_categories` (`id`, `title`, `description`) VALUES
 (NULL, 'Моя первая категория', 'Первая категория по умолчанию для подписчиков');
+
+ALTER TABLE `modx_letters_subscribers` ADD UNIQUE KEY `email` (`email`);
