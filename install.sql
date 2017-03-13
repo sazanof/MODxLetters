@@ -45,3 +45,6 @@ CREATE TABLE IF NOT EXISTS `modx_letters_templates` (
 
 INSERT INTO `modx_letters_templates` (`id`, `date`, `title`, `description`, `code`) VALUES
 (NULL, '2017-01-17 11:07:00', 'Пустой шаблон по умолчанию', 'Описание', '{{ content|raw }}');
+
+INSERT INTO `modx_letters_categories` (`id`, `title`, `description`) VALUES
+(NULL, 'Моя первая категория', 'Первая категория по умолчанию для подписчиков');
