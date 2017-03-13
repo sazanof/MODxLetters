@@ -33,7 +33,6 @@ class Realemail
         {
             echo "$errstr ($errno)\n";
         }
-
         else{
             // отправляем пустую строку, чтобы получить приветствие сервера
             $this->sWrite($socket, "");
@@ -71,8 +70,4 @@ class Realemail
         }
         return $out;
     }
-
 }
-
-
-?>
