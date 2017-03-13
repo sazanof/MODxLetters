@@ -29,13 +29,18 @@ $mail = new PHPMailer();
  * @formname
  * Имя формы атрибута name
  * String
+ *
+ *
+ * ПРИМЕР вызова
+ * [!MODxLetters? &type=`subscribe` &cat_id=`2`!]
+ * [!MODxLetters? &type=`unsubscribe`!]
  */
 $lng = isset($lng) ? $lng : 'russian-UTF8';
 $formname = isset($formname) ? $formname : 'lForm';
 $cat_id = isset($cat_id) ? $cat_id : '';
 $type = isset($type) ? $type : 'subscribe';
 $tpl = isset($tpl) ? $modx->getChunk($tpl) : '
-<form action="[~[*id*]~]&type=suscribe" method="post" name="[+formname+]">
+<form action="[~[*id*]~]?type=suscribe" method="post" name="[+formname+]">
 <input type="hidden" name="token" value="[+token+]">
 <div class="form-group">
     <input type="text" name="firstname" class="form-control" placeholder="Ваше имя" value="[+firstname+]">
@@ -47,7 +52,7 @@ $tpl = isset($tpl) ? $modx->getChunk($tpl) : '
 </form>';
 
 $tpl_unsuscribe = isset($tpl_unsuscribe) ? $tpl_unsuscribe : '
-<form method="post" action="[~[*id*]~]&type=unsuscribe">
+<form method="post" action="[~[*id*]~]?type=unsuscribe">
 <input type="hidden" name="token" value="[+token+]">
 <div class="input-group">
     <span class="input-group-addon">@</span>
