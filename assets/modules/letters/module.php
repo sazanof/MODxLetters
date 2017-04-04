@@ -6,14 +6,31 @@ if (file_exists($lng_file)) {
 } else {
     die("Не найден языковой файл! Проверьте конфинурацию модуля и файлы.");
 }
+
 require ENL_PATH . 'classes/Realemail.php';
 require_once ENL_PATH . 'classes/Letters.php';
 require_once ENL_PATH . 'classes/Categories.php';
 require_once ENL_PATH . 'classes/Subscribers.php';
+
 $realemail = new Realemail();
 $letters = new Letters();
 $categories = new Categories();
 $subscribers = new Subscribers();
+
+$sql = 'show tables';
+$res = $modx->db->query($sql);
+$res = $modx->db->makeArray($res);
+$dbase = str_replace('`','',$modx->db->config['dbase']);
+foreach ($res as $key => $val){
+    $tbls[]=$val['Tables_in_'.$dbase];
+}
+
+//echo $modx->db->config['table_prefix'].'letters_subscribers'.'<pre>';print_r($tbls);die;
+if (!in_array($modx->db->config['table_prefix'].'letters_subscribers', $tbls)){
+    require_once(ENL_PATH . 'inc/help.inc.php');
+    echo $out;
+    die;
+}
 $cats = $categories->getCategories();
 $cat_id = '';
 foreach ($cats as $cat) {
@@ -276,6 +293,7 @@ switch ($act) {
         break;
     case 5:
         $title = $lang['links_help'];
+        require_once(ENL_PATH . 'inc/help.inc.php');
         break;
     case 6:
         require_once(ENL_PATH . 'inc/csv.import.inc.php');

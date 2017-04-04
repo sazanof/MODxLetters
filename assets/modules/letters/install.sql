@@ -1,12 +1,11 @@
-CREATE TABLE IF NOT EXISTS `modx_letters_categories` (
+CREATE TABLE IF NOT EXISTS `{per}letters_categories` (
   `id` int(10) NOT NULL auto_increment,
   `title` varchar(255) NOT NULL,
   `description` text NOT NULL,
   PRIMARY KEY  (`id`)
 );
-
-
-CREATE TABLE IF NOT EXISTS `modx_letters_newsletter` (
+#sep#
+CREATE TABLE IF NOT EXISTS `{per}letters_newsletter` (
   `id` int(10) NOT NULL auto_increment,
   `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `status` int(11) NOT NULL DEFAULT '0',
@@ -18,8 +17,8 @@ CREATE TABLE IF NOT EXISTS `modx_letters_newsletter` (
   `log` longtext,
   PRIMARY KEY  (`id`)
 );
-
-CREATE TABLE IF NOT EXISTS `modx_letters_subscribers` (
+#sep#
+CREATE TABLE IF NOT EXISTS `{per}letters_subscribers` (
   `id` int(11) NOT NULL auto_increment,
   `firstname` varchar(50) NOT NULL DEFAULT '',
   `lastname` varchar(50) NOT NULL DEFAULT '',
@@ -31,9 +30,8 @@ CREATE TABLE IF NOT EXISTS `modx_letters_subscribers` (
   `cat_id` varchar(255) NOT NULL COMMENT 'поле json в котором перечисляются категории писем, закрепленным за подписчиками',
   PRIMARY KEY  (`id`)
 );
-
-
-CREATE TABLE IF NOT EXISTS `modx_letters_templates` (
+#sep#
+CREATE TABLE IF NOT EXISTS `{per}letters_templates` (
   `id` int(11) NOT NULL auto_increment,
   `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `title` varchar(255) NOT NULL,
@@ -41,12 +39,5 @@ CREATE TABLE IF NOT EXISTS `modx_letters_templates` (
   `code` text NOT NULL,
   PRIMARY KEY  (`id`)
 );
-
-
-INSERT INTO `modx_letters_templates` (`id`, `date`, `title`, `description`, `code`) VALUES
-(NULL, '2017-01-17 11:07:00', 'Пустой шаблон по умолчанию', 'Описание', '{{ content|raw }}');
-
-INSERT INTO `modx_letters_categories` (`id`, `title`, `description`) VALUES
-(NULL, 'Моя первая категория', 'Первая категория по умолчанию для подписчиков');
-
-ALTER TABLE `modx_letters_subscribers` ADD UNIQUE KEY `email` (`email`);
+#sep#
+ALTER TABLE `{per}letters_subscribers` ADD UNIQUE KEY `email` (`email`);
