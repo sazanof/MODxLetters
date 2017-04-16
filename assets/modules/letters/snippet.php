@@ -1,12 +1,4 @@
 <?php
-if (!defined('MODX_BASE_PATH')) {
-    die('What are you doing? Get out of here!');
-}
-session_start();
-include_once MODX_BASE_PATH . 'assets/modules/letters/inc/cfg.php';
-$mailer_file = MODX_MANAGER_PATH.'includes/controls/phpmailer/class.phpmailer.php';
-require_once ($mailer_file);
-$mail = new PHPMailer();
 /*
  * @lng
  * Язык
@@ -35,6 +27,14 @@ $mail = new PHPMailer();
  * [!MODxLetters? &type=`subscribe` &cat_id=`2`!]
  * [!MODxLetters? &type=`unsubscribe`!]
  */
+if (!defined('MODX_BASE_PATH')) {
+    die('What are you doing? Get out of here!');
+}
+session_start();
+include_once MODX_BASE_PATH . 'assets/modules/letters/inc/cfg.php';
+$mailer_file = MODX_MANAGER_PATH.'includes/controls/phpmailer/class.phpmailer.php';
+require_once ($mailer_file);
+$mail = new PHPMailer();
 $lng = isset($lng) ? $lng : 'ru';
 $formname = isset($formname) ? $formname : 'lForm';
 $cat_id = isset($cat_id) ? $cat_id : '';
