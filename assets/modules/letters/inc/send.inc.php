@@ -33,7 +33,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
     if (is_array($subs) || count($subs) > 0) {
         $ar = $subscribers->makeSubsArray($subs);
         $num = count($ar);
-        $mailer_file = MODX_BASE_PATH . 'manager/includes/controls/phpmailer/class.phpmailer.php';
+        $mailer_file = MODX_MANAGER_PATH.'includes/controls/phpmailer/class.phpmailer.php';
         if ($num == 0){
             $subscribers->deleteTmpFile();
             $answer = $lang['send_complete'];
