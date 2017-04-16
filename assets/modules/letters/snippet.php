@@ -35,7 +35,7 @@ $mail = new PHPMailer();
  * [!MODxLetters? &type=`subscribe` &cat_id=`2`!]
  * [!MODxLetters? &type=`unsubscribe`!]
  */
-$lng = isset($lng) ? $lng : 'russian-UTF8';
+$lng = isset($lng) ? $lng : 'ru';
 $formname = isset($formname) ? $formname : 'lForm';
 $cat_id = isset($cat_id) ? $cat_id : '';
 $type = isset($type) ? $type : 'subscribe';
