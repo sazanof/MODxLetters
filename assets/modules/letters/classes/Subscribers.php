@@ -31,7 +31,6 @@ class Subscribers
     }
 
     public function InsOrUpdSubscriber($data,$id=false){
-        //print_r($data);
         global $modx;
         $fields=$this->fields;
         $data['created'] = 'NOW()';
@@ -66,14 +65,10 @@ class Subscribers
         $dub = implode(',',$duplicate);
         if (!in_array('', $data)){
             $sql = "INSERT INTO $this->tbl ($keys) VALUES ($values) ON DUPLICATE KEY UPDATE $dub";
-            //echo $sql;
             if($modx->db->query($sql)){
                 $res = true;
             }
             return $res;
-        }
-        else {
-            return header('Location: '.$_SERVER['REQUEST_URI']);
         }
     }
 
