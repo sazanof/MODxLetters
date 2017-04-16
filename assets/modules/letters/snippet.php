@@ -189,4 +189,4 @@ if (file_exists($lng_file)) {
 } else {
     $out = "Не найден языковой файл! Проверьте конфинурацию модуля и файлы.";
 }
-return $out;
+echo $out;
