@@ -4,7 +4,7 @@ if (!defined('MODX_BASE_PATH')) {
 }
 session_start();
 include_once MODX_BASE_PATH . 'assets/modules/letters/inc/cfg.php';
-$mailer_file = MODX_BASE_PATH . 'manager/includes/controls/phpmailer/class.phpmailer.php';
+$mailer_file = MODX_MANAGER_PATH.'includes/controls/phpmailer/class.phpmailer.php';
 require_once ($mailer_file);
 $mail = new PHPMailer();
 /*
@@ -18,7 +18,7 @@ $mail = new PHPMailer();
  * По умолчанию так, как определено ниже.
  * Возможные значения - имя чанка в системе
  *
- * @tpl_unsuscribe
+ * @tpl_unsubscribe
  * Шаблон отписки от рассылки
  * Значение: чанк из системы
  *
@@ -40,7 +40,7 @@ $formname = isset($formname) ? $formname : 'lForm';
 $cat_id = isset($cat_id) ? $cat_id : '';
 $type = isset($type) ? $type : 'subscribe';
 $tpl = isset($tpl) ? $modx->getChunk($tpl) : '
-<form action="[~[*id*]~]?type=suscribe" method="post" name="[+formname+]">
+<form action="[~[*id*]~]?type=subscribe" method="post" name="[+formname+]">
 <input type="hidden" name="token" value="[+token+]">
 <div class="form-group">
     <input type="text" name="firstname" class="form-control" placeholder="Ваше имя" value="[+firstname+]">
@@ -51,8 +51,8 @@ $tpl = isset($tpl) ? $modx->getChunk($tpl) : '
 <button type="submit" name="sub" value="1" class="btn btn-success">Отправить</button>
 </form>';
 
-$tpl_unsuscribe = isset($tpl_unsuscribe) ? $tpl_unsuscribe : '
-<form method="post" action="[~[*id*]~]?type=unsuscribe">
+$tpl_unsubscribe = isset($tpl_unsubscribe) ? $tpl_unsubscribe : '
+<form method="post" action="[~[*id*]~]?type=unsubscribe">
 <input type="hidden" name="token" value="[+token+]">
 <div class="input-group">
     <span class="input-group-addon">@</span>
@@ -99,7 +99,7 @@ if (file_exists($lng_file)) {
     // подписаться
     switch ($type) {
         case 'subscribe':
-            if ($_POST['sub'] == 1 && !empty($_POST['token']) && $_GET['type'] === 'suscribe') {
+            if ($_POST['sub'] == 1 && !empty($_POST['token']) && $_GET['type'] === 'subscribe') {
                 $_SESSION['token'] = $subscribers->onlyChars($_POST['token']);
                 if ($_SESSION['token'] === $_POST['token']) {
                     $data['firstname'] = $subscribers->onlyChars($_POST['firstname']);
@@ -123,7 +123,7 @@ if (file_exists($lng_file)) {
             break;
         case 'unsubscribe':
 
-            if ($_POST['sub']==1 && !empty($_POST['token']) && $_GET['type'] === 'unsuscribe'){
+            if ($_POST['sub']==1 && !empty($_POST['token']) && $_GET['type'] === 'unsubscribe'){
                 if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
                     $data['email'] = $_POST['email'];
                     $s = $subscribers->getSubscribers("email='" . $data['email'] . "'");
@@ -154,7 +154,7 @@ if (file_exists($lng_file)) {
                 if ($_GET['unset'] == $_SESSION['unset']){
                     if ((int)$_GET['email']){
                         if ($subscribers->deleteSubscriber($_GET['email'])){
-                            $out = $lang['unsuscribe_success'];
+                            $out = $lang['unsubscribe_success'];
                             unset ($_SESSION['unset']);
                         }
                     }
@@ -162,7 +162,7 @@ if (file_exists($lng_file)) {
                 }
             }
             else {
-                $tpl = $tpl_unsuscribe;
+                $tpl = $tpl_unsubscribe;
             }
 
             break;
@@ -189,4 +189,4 @@ if (file_exists($lng_file)) {
 } else {
     $out = "Не найден языковой файл! Проверьте конфинурацию модуля и файлы.";
 }
-echo $out;
+return $out;
