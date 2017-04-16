@@ -20,7 +20,7 @@ define('TBL_SUBSCRIBERS',$modx->getFullTableName(MODULE_NAME.'_subscribers'));
 define('TBL_TEMPLATES',$modx->getFullTableName(MODULE_NAME.'_templates'));
 define('TBL_LETTERS',$modx->getFullTableName(MODULE_NAME.'_newsletter'));
 define('TBL_CATEGORIES',$modx->getFullTableName(MODULE_NAME.'_categories'));
-$lng = isset($lng) ? $lng : 'russian-UTF8';
+$lng = isset($lng) ? $lng : 'ru';
 $lng_file = ENL_PATH.'languages/'.$lng.'.php';
 require_once (ENL_PATH.'vendor/autoload.php');
 $loader = new Twig_Loader_Filesystem(ENL_PATH.'templates');
