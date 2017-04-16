@@ -113,7 +113,7 @@ if (file_exists($lng_file)) {
                             //добавляем подписчика
                             $data['cat_id'] = $cat_id;
                             if ($subscribers->InsOrUpdSubscriber($data, '') === true) {
-                                header('Location: ' . $_SERVER['REQUEST_URI']);
+                                $out .= $lang['thankyou'];
                             }
                             unset($_SESSION['token']);
                         }
