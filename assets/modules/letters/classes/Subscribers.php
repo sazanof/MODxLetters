@@ -63,6 +63,9 @@ class Subscribers
 
         }
         $dub = implode(',',$duplicate);
+        if (!intval($data['cat_id'])){
+			unset($data['cat_id']);
+		}
         if (!in_array('', $data)){
             $sql = "INSERT INTO $this->tbl ($keys) VALUES ($values) ON DUPLICATE KEY UPDATE $dub";
             if($modx->db->query($sql)){
