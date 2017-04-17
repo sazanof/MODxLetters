@@ -5,7 +5,7 @@
  * Модуль управления подписчиками и рассылкой писем
  * 
  * @category	module
- * @version 	1.0.5
+ * @version 	1.0.6
  * @internal	@properties
  * @internal	@modx_category Manager and Admin
  * @internal    @installset base, sample
