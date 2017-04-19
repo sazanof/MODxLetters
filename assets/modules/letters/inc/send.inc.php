@@ -79,7 +79,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
             //$mail->SMTPDebug  = 1;
             foreach ($ar as $val){
                 //add realemail check
-                if ($realemail->checkEmail($val['email']) == 1 or $realemail->checkEmail($val['email']) == 2){
+                //if ($realemail->checkEmail($val['email']) == 1 or $realemail->checkEmail($val['email']) == 2){
                     $mail->AddAddress($val['email'],$val['firstname']);
                     if (!$mail->send()) {
                         echo 'Main mail: ' . $mail->ErrorInfo;
@@ -89,7 +89,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
                         $subscribers->updateLastnewsletter($val['id']);
                         $mail->ClearAddresses();
                     }
-                }
+                //}
             }
         } else {
             exit('Отсутствует класс PHP Mailer. Обратитесь к администратору.');

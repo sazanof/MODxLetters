@@ -65,14 +65,14 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
             //echo $sql;
             if (filter_var($email,FILTER_VALIDATE_EMAIL)){
                 // add realemail check
-                if ($realemail->checkEmail($email) == 1 or $realemail->checkEmail($email) == 2){
+                //if ($realemail->checkEmail($email) == 1 or $realemail->checkEmail($email) == 2){
                     if ($modx->db->query($sql)){
                         echo 1;
                     }
-                }
-                else {
-                    echo $email.' не существует в природе.';
-                }
+                //}
+                //else {
+                //    echo $email.' не существует в природе.';
+                //}
             }
             else {
                 echo 'Не заполнен email';
