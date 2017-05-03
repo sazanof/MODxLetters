@@ -1,4 +1,5 @@
 #actions {height:54px;}
+.actionButtons .fa {display:inline !important}
 .tbl_subscribers{margin-top:15px}
 button {width: auto;}
 .btn-warning,.btn-success,.btn-danger,.btn-info {color:#ffffff !important;}
