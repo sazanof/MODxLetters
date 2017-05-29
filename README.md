@@ -21,5 +21,5 @@
  Имя формы атрибута name
  String
  * ПРИМЕР вызова
- [!MODxLetters? &type=`subscribe` &cat_id=`2`!]
- [!MODxLetters? &type=`unsubscribe`!]
+ [!Letters? &type=`subscribe` &cat_id=`2`!]
+ [!Letters? &type=`unsubscribe`!]
