@@ -24,3 +24,4 @@ small.smaller {color:#999999}
 .block {margin-top:6px}
 .dropdown-menu li {list-style: none}
 .floatDelete {position: absolute;right:-9px; top:9px; padding-right:15px}
+.editSub, .deleteSome {display: inline;width:auto}
