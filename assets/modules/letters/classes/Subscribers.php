@@ -1,11 +1,4 @@
 <?php
-
-/**
- * Created by PhpStorm.
- * User: sazanof
- * Date: 13.01.2017
- * Time: 13:49
- */
 class Subscribers
 {
     protected $tbl = TBL_SUBSCRIBERS;
@@ -66,7 +59,7 @@ class Subscribers
         if (!intval($data['cat_id'])){
 			unset($data['cat_id']);
 		}
-        if (!in_array('', $data)){
+        if ($this->checkEmail($data['email'])){
             $sql = "INSERT INTO $this->tbl ($keys) VALUES ($values) ON DUPLICATE KEY UPDATE $dub";
             if($modx->db->query($sql)){
                 $res = true;
