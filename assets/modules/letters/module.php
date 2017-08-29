@@ -24,8 +24,6 @@ $dbase = str_replace('`','',$modx->db->config['dbase']);
 foreach ($res as $key => $val){
     $tbls[]=$val['Tables_in_'.$dbase];
 }
-
-//echo $modx->db->config['table_prefix'].'letters_subscribers'.'<pre>';print_r($tbls);die;
 if (!in_array($modx->db->config['table_prefix'].'letters_subscribers', $tbls)){
     require_once(ENL_PATH . 'inc/help.inc.php');
     echo $out;
@@ -42,7 +40,7 @@ $title = $lang['title'];
 $content = '';
 $out .= '<!DOCTYPE html><html><head>
 <title>[+title+]</title>
-<link rel="stylesheet" type="text/css" href="'.MODX_MANAGER_URL.'/media/style/MODxRE2/style.css" />
+<link rel="stylesheet" type="text/css" href="'.MODX_MANAGER_URL.'/media/style/'.$modx->config['manager_theme'].'/style.css" />
 <link rel="stylesheet" type="text/css" href="[+path+]libs/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="[+path+]libs/DataTables/dataTables.bootstrap.min.css"/>
 <link rel="stylesheet" href="media/style/common/font-awesome/css/font-awesome.min.css" />
