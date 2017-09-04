@@ -16,4 +16,4 @@
  */
  
  //sazanof.ru
- require_once MODX_BASE_PATH.'assets/modules/letters/snippet.php';
+ require MODX_BASE_PATH.'assets/modules/letters/snippet.php';
