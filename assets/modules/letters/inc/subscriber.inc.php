@@ -172,7 +172,7 @@ $html = '
             <input type="hidden" name="sub_id" id="sub_id" value="">
             <div class="input">
                 <label for="email">' . $lang['subscriber_email'] . '</label>
-                <input type="email" class="form-control" name="email" id="email" value="" placeholder="' . $lang['subscriber_email_txt'] . '">
+                <input type="text" class="form-control" name="email" id="email" value="" placeholder="' . $lang['subscriber_email_txt'] . '">
             </div>
             <div class="input">
                 <label for="firstname">' . $lang['subscriber_firstname'] . '</label>
