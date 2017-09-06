@@ -22,6 +22,10 @@
  * Имя формы атрибута name
  * String
  *
+ *  @ajax
+ *  Отправка формы ajax
+ *  По умолчания 0
+ *  Пример: &ajax=`1`
  *
  * ПРИМЕР вызова
  * [!MODxLetters? &type=`subscribe` &cat_id=`2`!]
@@ -30,7 +34,7 @@
 if (!defined('MODX_BASE_PATH')) {
     die('What are you doing? Get out of here!');
 }
-session_start();
+//session_start();
 include_once MODX_BASE_PATH . 'assets/modules/letters/inc/cfg.php';
 $mailer_file = MODX_MANAGER_PATH.'includes/controls/phpmailer/class.phpmailer.php';
 require_once ($mailer_file);
@@ -40,7 +44,9 @@ $formname = isset($formname) ? $formname : 'lForm';
 $cat_id = isset($cat_id) ? $cat_id : '';
 $type = isset($type) ? $type : 'subscribe';
 $tpl = isset($tpl) ? $modx->getChunk($tpl) : '
-<form action="[~[*id*]~]?type=subscribe" method="post" name="[+formname+]">
+<div id="[+formname+]">
+[+msg+]
+<form action="[~[*id*]~]?type=subscribe" method="post" name="[+formname+]" onsubmit="submitAjax_[+formname+]();return false;">
 <input type="hidden" name="token" value="[+token+]">
 <div class="form-group">
     <input type="text" name="firstname" class="form-control" placeholder="Ваше имя" value="[+firstname+]">
@@ -49,7 +55,7 @@ $tpl = isset($tpl) ? $modx->getChunk($tpl) : '
     <input type="email" name="email" class="form-control" placeholder="Адрес email" value="[+email+]">
 </div>
 <button type="submit" name="sub" value="1" class="btn btn-success">Отправить</button>
-</form>';
+</form></div>';
 
 $tpl_unsubscribe = isset($tpl_unsubscribe) ? $tpl_unsubscribe : '
 <form method="post" action="[~[*id*]~]?type=unsubscribe">
@@ -66,14 +72,16 @@ $tpl_unsubscribe = isset($tpl_unsubscribe) ? $tpl_unsubscribe : '
 $confirm_tpl = isset($confirm_tpl) ? $confirm_tpl : 'Здравствуйте! Поступил запрос на исключение Вас из списка рассылки.
 Для подтверждения перейдите по этой <a href="[+confirm_url+]" title="" target="_blank">ссылке</a>
 <br><i>Вы можете также скопировать ссылку и вставить его в адресную строку браузера: [+confirm_url+]</i>';
-
+$ajax = isset($ajax) ? $ajax:0;
 $lng_file = ENL_PATH . 'languages/' . $lng . '.php';
 $token = sha1(md5(date('dmYHis') . '_' . $type));
 $out = '';
+$msg = '';
 $data = array();
 if (file_exists($lng_file)) {
     require_once($lng_file);
     require_once ENL_PATH . 'classes/Subscribers.php';
+    $thankyouTpl = isset($thankyouTpl) ? $thankyouTpl : $lang['thankyou'];
     $subscribers = new Subscribers();
     if ($conf['email_method'] == 'mail') {
         $mail->IsMail();
@@ -99,27 +107,55 @@ if (file_exists($lng_file)) {
     // подписаться
     switch ($type) {
         case 'subscribe':
+            if ($ajax==1){
+                $data['email'] = $modx->db->escape($_POST['email']);
+                $data['firstname'] = $modx->db->escape($_POST['firstname']);
+                $_POST['sub']=1;
+                $_GET['type'] = 'subscribe';
+                $out.= '<script>
+                     function submitAjax_[+formname+](){
+                            jQuery.ajax({
+                                    type:"POST",
+                                    data:$("#[+formname+] form").serialize(),
+                                    success:function(data){
+                                        var  text= $(data).find("#[+formname+]").html();
+                                        $("#[+formname+]").html(text);
+                                        console.log(text)
+                                }
+                            });
+                            return false;
+                        }
+                    </script>';
+                
+            }
             if ($_POST['sub'] == 1 && !empty($_POST['token']) && $_GET['type'] === 'subscribe') {
                 $_SESSION['token'] = $subscribers->onlyChars($_POST['token']);
                 if ($_SESSION['token'] === $_POST['token']) {
-                    $data['firstname'] = $subscribers->onlyChars($_POST['firstname']);
-                    if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-                        $data['email'] = $_POST['email'];
-                        $s = $subscribers->getSubscribers("email='" . $data['email'] . "'");
-                        if (count($s) == 1) {
-                            $out .= $lang['subscriber_exist'];
-                            unset($_SESSION['token']);
-                        } else {
-                            //добавляем подписчика
-                            $data['cat_id'] = $cat_id;
-                            if ($subscribers->InsOrUpdSubscriber($data, 'NULL') === true) {
-                                $out .= $lang['thankyou'];
+                    if (!empty($_POST['email'])){
+                        $data['firstname'] = $subscribers->onlyChars($_POST['firstname']);
+                        if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+                            $data['email'] = $_POST['email'];
+                            $s = $subscribers->getSubscribers("email='" . $data['email'] . "'");
+                            if (count($s) == 1) {
+                                $msg .= $lang['subscriber_exist'];
+                                unset($_SESSION['token']);
+                            } else {
+                                //добавляем подписчика
+                                $data['cat_id'] = $cat_id;
+                                if ($subscribers->InsOrUpdSubscriber($data, 'NULL') === true) {
+                                    $tpl = $thankyouTpl;
+                                }
+                                unset($_SESSION['token']);
                             }
-                            unset($_SESSION['token']);
                         }
                     }
+                    else {
+                        $msg .= $lang['error'];
+                    }
+                    
                 }
             }
+            
             break;
         case 'unsubscribe':
 
@@ -176,16 +212,19 @@ if (file_exists($lng_file)) {
         '[+token+]',
         '[+formname+]',
         '[+firstname+]',
-        '[+email+]'
+        '[+email+]',
+        '[+msg+]'
     );
     $r = array(
         $token,
         $formname,
         $data['firstname'],
-        $data['email']
+        $data['email'],
+        $msg
     );
-    $tpl = str_replace($f, $r, $tpl);
+    
     $out .= $tpl;
+    $out = str_replace($f, $r, $out);
 } else {
     $out = "Не найден языковой файл! Проверьте конфинурацию модуля и файлы.";
 }
