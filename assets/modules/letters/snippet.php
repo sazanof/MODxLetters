@@ -143,7 +143,7 @@ if (file_exists($lng_file)) {
                                 //добавляем подписчика
                                 $data['cat_id'] = $cat_id;
                                 if ($subscribers->InsOrUpdSubscriber($data, 'NULL') === true) {
-                                    $tpl = $thankyouTpl;
+                                    $msg = $thankyouTpl;
                                 }
                                 unset($_SESSION['token']);
                             }
