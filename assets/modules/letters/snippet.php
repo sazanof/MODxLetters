@@ -43,8 +43,8 @@ $lng = isset($lng) ? $lng : 'ru';
 $formname = isset($formname) ? $formname : 'lForm';
 $cat_id = isset($cat_id) ? $cat_id : '';
 $type = isset($type) ? $type : 'subscribe';
+$wrapTpl= isset($wrapTpl) ? $wrapTpl : '<div id="[+formname+]">[+form+]</div>';
 $tpl = isset($tpl) ? $modx->getChunk($tpl) : '
-<div id="[+formname+]">
 [+msg+]
 <form action="[~[*id*]~]?type=subscribe" method="post" name="[+formname+]" onsubmit="submitAjax_[+formname+]();return false;">
 <input type="hidden" name="token" value="[+token+]">
@@ -55,7 +55,7 @@ $tpl = isset($tpl) ? $modx->getChunk($tpl) : '
     <input type="email" name="email" class="form-control" placeholder="Адрес email" value="[+email+]">
 </div>
 <button type="submit" name="sub" value="1" class="btn btn-success">Отправить</button>
-</form></div>';
+</form>';
 
 $tpl_unsubscribe = isset($tpl_unsubscribe) ? $tpl_unsubscribe : '
 <form method="post" action="[~[*id*]~]?type=unsubscribe">
@@ -143,14 +143,14 @@ if (file_exists($lng_file)) {
                                 //добавляем подписчика
                                 $data['cat_id'] = $cat_id;
                                 if ($subscribers->InsOrUpdSubscriber($data, 'NULL') === true) {
-                                    $msg = $thankyouTpl;
+                                    $tpl = $thankyouTpl;
                                 }
                                 unset($_SESSION['token']);
                             }
                         }
                     }
                     else {
-                        $msg .= $lang['error'];
+                        $msg.= $lang['error'];
                     }
                     
                 }
@@ -222,8 +222,8 @@ if (file_exists($lng_file)) {
         $data['email'],
         $msg
     );
-    
-    $out .= $tpl;
+    $wrapTpl = str_replace('[+form+]',$tpl,$wrapTpl);
+    $out .= $wrapTpl;
     $out = str_replace($f, $r, $out);
 } else {
     $out = "Не найден языковой файл! Проверьте конфинурацию модуля и файлы.";
