@@ -25,3 +25,9 @@
  * ПРИМЕР вызова
  ```[!MODxLetters? &type=`subscribe` &cat_id=`2`!]```
  ```[!MODxLetters? &type=`unsubscribe`!]```
+ 
+ Для фоновой отправки используйте 
+ ```
+ &ajax=`1`
+ ````
+ необходим подключенный jquery на странице!
