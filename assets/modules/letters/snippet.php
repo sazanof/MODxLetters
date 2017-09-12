@@ -43,7 +43,7 @@ $lng = isset($lng) ? $lng : 'ru';
 $formname = isset($formname) ? $formname : 'lForm';
 $cat_id = isset($cat_id) ? $cat_id : '';
 $type = isset($type) ? $type : 'subscribe';
-$wrapTpl= isset($wrapTpl) ? $wrapTpl : '<div id="[+formname+]">[+form+]</div>';
+$wrapTpl= isset($wrapTpl) ? $modx->getChunk($wrapTpl) : '<div id="[+formname+]">[+form+]</div>';
 $tpl = isset($tpl) ? $modx->getChunk($tpl) : '
 [+msg+]
 <form action="[~[*id*]~]?type=subscribe" method="post" name="[+formname+]" onsubmit="submitAjax_[+formname+]();return false;">
@@ -57,7 +57,7 @@ $tpl = isset($tpl) ? $modx->getChunk($tpl) : '
 <button type="submit" name="sub" value="1" class="btn btn-success">Отправить</button>
 </form>';
 
-$tpl_unsubscribe = isset($tpl_unsubscribe) ? $tpl_unsubscribe : '
+$tpl_unsubscribe = isset($tpl_unsubscribe) ? $modx->getChunk($tpl_unsubscribe) : '
 <form method="post" action="[~[*id*]~]?type=unsubscribe">
 <input type="hidden" name="token" value="[+token+]">
 <div class="input-group">
@@ -69,7 +69,7 @@ $tpl_unsubscribe = isset($tpl_unsubscribe) ? $tpl_unsubscribe : '
     </div>
 </form>
 ';
-$confirm_tpl = isset($confirm_tpl) ? $confirm_tpl : 'Здравствуйте! Поступил запрос на исключение Вас из списка рассылки.
+$confirm_tpl = isset($confirm_tpl) ? $modx->getChunk($confirm_tpl) : 'Здравствуйте! Поступил запрос на исключение Вас из списка рассылки.
 Для подтверждения перейдите по этой <a href="[+confirm_url+]" title="" target="_blank">ссылке</a>
 <br><i>Вы можете также скопировать ссылку и вставить его в адресную строку браузера: [+confirm_url+]</i>';
 $ajax = isset($ajax) ? $ajax:0;
