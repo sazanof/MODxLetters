@@ -104,7 +104,7 @@ class Letters
         }
         $keys = implode(',',array_keys($res));
         $values = implode(',',array_values($res));
-        $duplicate = '';
+        $duplicate = array();
         foreach ($res as $key => $value){
             if (!intval($value)){
                 $duplicate[] = $key."=".$value;
