@@ -41,4 +41,5 @@ CREATE TABLE IF NOT EXISTS `{per}letters_templates` (
 );
 #sep#
 ALTER TABLE `{per}letters_subscribers` ADD UNIQUE KEY `email` (`email`);
+#sep#
 ALTER TABLE `{per}letters_subscribers` ADD UNIQUE KEY `id` (`id`);
