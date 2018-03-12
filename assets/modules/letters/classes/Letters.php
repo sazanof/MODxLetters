@@ -88,7 +88,9 @@ class Letters
         if (intval($id)){
             $data['id'] = $id;
         }
-        $data['cat_id'] = implode(',',$data['cat_id']);
+        if (is_array($data['cat_id'])){
+			$data['cat_id'] = implode(',',$data['cat_id']);
+		}
         if (is_array($data) && count($data) > 0){
             $f_ar = explode(',',$fields);
             foreach ($data as $key => $val){
