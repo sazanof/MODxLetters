@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `{per}letters_categories` (
 #sep#
 CREATE TABLE IF NOT EXISTS `{per}letters_newsletter` (
   `id` int(10) NOT NULL auto_increment,
-  `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` int(11) NOT NULL DEFAULT '0',
   `sent` int(11) NOT NULL DEFAULT '0',
   `template` longtext,
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `{per}letters_subscribers` (
 #sep#
 CREATE TABLE IF NOT EXISTS `{per}letters_templates` (
   `id` int(11) NOT NULL auto_increment,
-  `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `title` varchar(255) NOT NULL,
   `description` text NOT NULL,
   `code` text NOT NULL,
