@@ -45,7 +45,7 @@ $cat_id = isset($cat_id) ? $cat_id : '';
 $type = isset($type) ? $type : 'subscribe';
 $wrapTpl= isset($wrapTpl) ? $modx->getChunk($wrapTpl) : '<div id="[+formname+]">[+form+]</div>';
 $tpl = isset($tpl) ? $modx->getChunk($tpl) : '
-[+msg+]
+<div style="color:red">[+msg+]</div>
 <form action="[~[*id*]~]?type=subscribe" method="post" name="[+formname+]" onsubmit="submitAjax_[+formname+]();return false;">
 <input type="hidden" name="token" value="[+token+]">
 <div class="form-group">
@@ -54,7 +54,7 @@ $tpl = isset($tpl) ? $modx->getChunk($tpl) : '
 <div class="form-group">
     <input type="email" name="email" class="form-control" placeholder="Адрес email" value="[+email+]">
 </div>
-<button type="submit" name="sub" value="1" class="btn btn-success">Отправить</button>
+<button type="submit" name="sub" value="[+formname+]" class="btn btn-success">Отправить</button>
 </form>';
 
 $tpl_unsubscribe = isset($tpl_unsubscribe) ? $modx->getChunk($tpl_unsubscribe) : '
@@ -64,7 +64,7 @@ $tpl_unsubscribe = isset($tpl_unsubscribe) ? $modx->getChunk($tpl_unsubscribe) :
     <span class="input-group-addon">@</span>
     <input type="email" name="email" value="[+email+]" class="form-control">
     <span class="input-group-btn">
-            <button class="btn btn-success" type="submit" name="sub" value="1">Отписываюсь!</button>
+            <button class="btn btn-success" type="submit" name="sub" value="[+formname+]">Отписываюсь!</button>
     </span>
     </div>
 </form>
@@ -79,7 +79,7 @@ $out = '';
 $msg = '';
 $data = array();
 if (file_exists($lng_file)) {
-    require_once($lng_file);
+    require ($lng_file);
     require_once ENL_PATH . 'classes/Subscribers.php';
     $thankyouTpl = isset($thankyouTpl) ? $thankyouTpl : $lang['thankyou'];
     $subscribers = new Subscribers();
@@ -110,7 +110,7 @@ if (file_exists($lng_file)) {
             if ($ajax==1){
                 $data['email'] = $modx->db->escape($_POST['email']);
                 $data['firstname'] = $modx->db->escape($_POST['firstname']);
-                $_POST['sub']=1;
+                $_POST['sub']=$formname;
                 $_GET['type'] = 'subscribe';
                 $out.= '<script>
                      function submitAjax_[+formname+](){
@@ -128,7 +128,7 @@ if (file_exists($lng_file)) {
                     </script>';
                 
             }
-            if ($_POST['sub'] == 1 && !empty($_POST['token']) && $_GET['type'] === 'subscribe') {
+            if ($_POST['sub'] == $formname && !empty($_POST['token']) && $_GET['type'] === 'subscribe') {
                 $_SESSION['token'] = $subscribers->onlyChars($_POST['token']);
                 if ($_SESSION['token'] === $_POST['token']) {
                     if (!empty($_POST['email'])){
@@ -154,8 +154,9 @@ if (file_exists($lng_file)) {
                     }
                     
                 }
+
             }
-            
+
             break;
         case 'unsubscribe':
 
