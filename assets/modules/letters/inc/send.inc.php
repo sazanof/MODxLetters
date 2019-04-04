@@ -33,7 +33,6 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
     if (is_array($subs) || count($subs) > 0) {
         $ar = $subscribers->makeSubsArray($subs);
         $num = count($ar);
-        $mailer_file = MODX_MANAGER_PATH.'includes/controls/phpmailer/class.phpmailer.php';
         if ($num == 0){
             $subscribers->deleteTmpFile();
             $answer = $lang['send_complete'];
@@ -47,12 +46,10 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
         );
         $response = json_encode($response);
         echo $response;
-        if (file_exists($mailer_file)) {
-            require_once $mailer_file;
-            // подключаемся к PHP Mailer
+        if ($modx->loadExtension('MODxMailer')) {
+            $mail = $modx->mail;
             $lt = $letters->getLetter($id);
             $body =  $letters->generateTplFromCode($lt['template'],$lt['newsletter']);
-            $mail = new PHPMailer();
             if ($conf['email_method'] == 'mail') {
                 $mail->IsMail();
             }
@@ -60,10 +57,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
                 $mail->IsSMTP();
                 $mail->Host = $conf['smtp_host'];
                 if ($conf['smtp_auth'] == 1) {
-                    $pass = explode('%',$conf['smtppw']);
                     $mail->SMTPAuth = true;
-                    $mail->Username = $conf['smtp_username'];
-                    $mail->Password = base64_decode($pass[0]);
                 } else {
                     $mail->SMTPAuth = false;
                 }
@@ -80,15 +74,15 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
             foreach ($ar as $val){
                 //add realemail check
                 //if ($realemail->checkEmail($val['email']) == 1 or $realemail->checkEmail($val['email']) == 2){
-                    $mail->AddAddress($val['email'],$val['firstname']);
-                    if (!$mail->send()) {
-                        echo 'Main mail: ' . $mail->ErrorInfo;
-                    } else {
-                        $subscribers->subscriberId = $val['id'];
-                        $subscribers->lastLetterSend($num);
-                        $subscribers->updateLastnewsletter($val['id']);
-                        $mail->ClearAddresses();
-                    }
+                $mail->AddAddress($val['email'],$val['firstname']);
+                if (!$mail->send()) {
+                    echo 'Main mail: ' . $mail->ErrorInfo;
+                } else {
+                    $subscribers->subscriberId = $val['id'];
+                    $subscribers->lastLetterSend($num);
+                    $subscribers->updateLastnewsletter($val['id']);
+                    $mail->ClearAddresses();
+                }
                 //}
             }
         } else {
