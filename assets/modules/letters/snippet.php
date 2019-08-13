@@ -34,11 +34,8 @@
 if (!defined('MODX_BASE_PATH')) {
     die('What are you doing? Get out of here!');
 }
-//session_start();
 include_once MODX_BASE_PATH . 'assets/modules/letters/inc/cfg.php';
-$mailer_file = MODX_MANAGER_PATH.'includes/controls/phpmailer/class.phpmailer.php';
-require_once ($mailer_file);
-$mail = new PHPMailer();
+$modx->loadExtension('MODxMailer');
 $lng = isset($lng) ? $lng : 'ru';
 $formname = isset($formname) ? $formname : 'lForm';
 $cat_id = isset($cat_id) ? $cat_id : '';
@@ -84,26 +81,26 @@ if (file_exists($lng_file)) {
     $thankyouTpl = isset($thankyouTpl) ? $thankyouTpl : $lang['thankyou'];
     $subscribers = new Subscribers();
     if ($conf['email_method'] == 'mail') {
-        $mail->IsMail();
+        $modx->mail->IsMail();
     }
     if ($conf['email_method'] == 'smtp') {
-        $mail->IsSMTP();
-        $mail->Host = $conf['smtp_host'];
+        $modx->mail->IsSMTP();
+        $modx->mail->Host = $conf['smtp_host'];
         if ($conf['smtp_auth'] == 1) {
             $pass = explode('%',$conf['smtppw']);
-            $mail->SMTPAuth = true;
-            $mail->Username = $conf['smtp_username'];
-            $mail->Password = base64_decode($pass[0]);
+            $modx->mail->SMTPAuth = true;
+            $modx->mail->Username = $conf['smtp_username'];
+            $modx->mail->Password = base64_decode($pass[0]);
         } else {
-            $mail->SMTPAuth = false;
+            $modx->mail->SMTPAuth = false;
         }
     }
-    $mail->CharSet = $modx->config['modx_charset'];
-    $mail->Sender = $conf['emailsender'];
+    $modx->mail->CharSet = $modx->config['modx_charset'];
+    $modx->mail->Sender = $conf['emailsender'];
     $From = $conf['emailsender'];
-    $mail->setFrom($From, $modx->config['site_name'],true);
-    $mail->addReplyTo($From, $modx->config['site_name']);
-    $mail->Subject = $lang['subject_unset'];
+    $modx->mail->setFrom($From, $modx->config['site_name'],true);
+    $modx->mail->addReplyTo($From, $modx->config['site_name']);
+    $modx->mail->Subject = $lang['subject_unset'];
     // подписаться
     switch ($type) {
         case 'subscribe':
@@ -169,14 +166,14 @@ if (file_exists($lng_file)) {
                         $link = $modx->config['site_url'].$modx->makeUrl($modx->documentIdentifier).$action;
                         $_SESSION['unset'] = sha1(md5($s[0]['email']));
                         $confirm_tpl = str_replace('[+confirm_url+]', $link , $confirm_tpl);
-                        $mail->Body = $confirm_tpl;
-                        $mail->AltBody = $confirm_tpl;
-                        $mail->AddAddress($s[0]['email'],$s[0]['firstname']);
-                        if (!$mail->send()) {
-                            echo 'Main mail: ' . $mail->ErrorInfo;
+                        $modx->mail->Body = $confirm_tpl;
+                        $modx->mail->AltBody = $confirm_tpl;
+                        $modx->mail->AddAddress($s[0]['email'],$s[0]['firstname']);
+                        if (!$modx->mail->send()) {
+                            echo 'Main mail: ' . $modx->mail->ErrorInfo;
                         } else {
                             header('Location:'.$_SERVER['REQUEST_URI']);
-                            $mail->ClearAddresses();
+                            $modx->mail->ClearAddresses();
                         }
                     }
 
