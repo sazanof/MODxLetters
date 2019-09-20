@@ -21,6 +21,9 @@ $sql = 'show tables';
 $res = $modx->db->query($sql);
 $res = $modx->db->makeArray($res);
 $dbase = str_replace('`','',$modx->db->config['dbase']);
+if ($modx->config['settings_version'][0] == 2){
+	$dbase = str_replace('`','',$modx->db->config['database']);
+}
 foreach ($res as $key => $val){
     $tbls[]=$val['Tables_in_'.$dbase];
 }
