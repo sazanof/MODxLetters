@@ -125,7 +125,7 @@ if (file_exists($lng_file)) {
                     </script>';
                 
             }
-            if ($_POST['sub'] == $formname && !empty($_POST['token']) && $_GET['type'] === 'subscribe') {
+            if ($_POST['sub'] === $formname && !empty($_POST['token']) && $_GET['type'] === 'subscribe') {
                 $_SESSION['token'] = $subscribers->onlyChars($_POST['token']);
                 if ($_SESSION['token'] === $_POST['token']) {
                     if (!empty($_POST['email'])){
@@ -157,7 +157,7 @@ if (file_exists($lng_file)) {
             break;
         case 'unsubscribe':
 
-            if ($_POST['sub']==1 && !empty($_POST['token']) && $_GET['type'] === 'unsubscribe'){
+            if ($_POST['sub'] === $formname && !empty($_POST['token']) && $_GET['type'] === 'unsubscribe'){
                 if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
                     $data['email'] = $_POST['email'];
                     $s = $subscribers->getSubscribers("email='" . $data['email'] . "'");
